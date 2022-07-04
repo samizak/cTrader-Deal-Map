@@ -33,6 +33,9 @@ namespace cAlgo.Indicators
 
         [Parameter(name: "Show Loss Deals?", Group = "Deal Map", DefaultValue = true)]
         public bool ShowLossDeals { get; set; }
+
+        [Parameter(name: "Bearish Colour", Group = "Deal Map", DefaultValue = "Red")]
+        public String BearishColour { get; set; }
         #endregion Parameters
 
 
@@ -61,12 +64,13 @@ namespace cAlgo.Indicators
             => opacity * 255 / 100;
 
         // Get the Colour from Net Profit
-        private static Color GetColour(double netProfit)
+        private Color GetColour(double netProfit)
             => netProfit > 0 ? Color.Cyan : netProfit < 0 ? Color.Red : Color.White;
+
         #endregion
 
 
-        public override void Calculate(int index) {}
+        public override void Calculate(int index) { }
 
         protected override void Initialize()
         {
@@ -180,39 +184,25 @@ namespace cAlgo.Indicators
         }
 
         protected override void OnTimer()
-        {
-            DrawDealMaps();
-        }
+            => DrawDealMaps();
+
         private void OnChartScrollChanged(ChartScrollEventArgs _)
-        {
-            RemoveObjects();
-        }
+            => RemoveObjects();
 
         private void OnChartSizeChanged(ChartSizeEventArgs _)
-        {
-            RemoveObjects();
-        }
+            => RemoveObjects();
 
         private void OnChartZoomChanged(ChartZoomEventArgs _)
-        {
-            RemoveObjects();
-        }
+            => RemoveObjects();
 
         private void OnPositionsClosed(PositionClosedEventArgs _)
-        {
-            RemoveObjects();
-        }
+            => RemoveObjects();
 
         private void OnPositionsModified(PositionModifiedEventArgs _)
-        {
-            RemoveObjects();
-        }
+            => RemoveObjects();
 
         private void OnPositionsOpened(PositionOpenedEventArgs _)
-        {
-            RemoveObjects();
-        }
-
+            => RemoveObjects();
         #endregion Events
     }
 }
