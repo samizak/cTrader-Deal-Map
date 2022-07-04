@@ -1,4 +1,4 @@
-﻿using cAlgo.API;
+using cAlgo.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,13 +93,11 @@ namespace cAlgo.Indicators
                 if (positions[i].SymbolName != SymbolName)
                     continue;
 
-                bool showProfitDeals = positions[i].NetProfit > 0 && !ShowProfitDeals;
-                bool showLosingDeals = positions[i].NetProfit < 0 && !ShowLossDeals;
+                bool showProfitDeals = ShowProfitDeals && positions[i].NetProfit > 0;
+                bool showLosingDeals = ShowLossDeals && positions[i].NetProfit < 0;
 
-                if (showProfitDeals || showLosingDeals)
+                if (!(showLosingDeals || showProfitDeals))
                     continue;
-
-                string dealName = "Deal" + i;
 
                 // Get DateTime of Entry and Exit of Trade
                 DateTime startDate = positions[i].EntryTime;
@@ -113,9 +111,9 @@ namespace cAlgo.Indicators
                 double startPrice = positions[i].EntryPrice;
                 double closePrice = Bars.ClosePrices.LastValue;
 
-                string dealMapName = TAG + dealName;
+                string dealMapName = TAG + "Deal" + i;
 
-                GetDealColour(positions, i, out Color dealCol);
+                GetDealColour(positions[i], out Color dealCol);
                 Chart.DrawTrendLine(dealMapName, startIndex, startPrice, endIndex, closePrice, color: dealCol, thickness: Thickness);
             }
         }
@@ -133,15 +131,12 @@ namespace cAlgo.Indicators
             DisplayText();
         }
 
-        private void GetDealColour(Position[] positions, int i, out Color dealCol)
-        {
-            double netProfit = positions[i].NetProfit;
-            dealCol = Color.FromArgb(MapValue(Opacity), GetColour(netProfit));
-        }
+        private void GetDealColour(Position position, out Color dealCol)
+            => dealCol = Color.FromArgb(MapValue(Opacity), GetColour(position.NetProfit));
 
         private string GetText(double netProfit)
         {
-            string sign = netProfit >= 0 ? "+" : "";
+            string sign = netProfit > 0 ? "+" : "";
             string getNetProfit = $"{sign}{netProfit:C}";
             string getPercentage = $"{sign}{netProfit / Account.Balance:0.00%}";
 
