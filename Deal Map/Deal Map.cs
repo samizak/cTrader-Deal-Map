@@ -69,7 +69,7 @@ namespace cAlgo.Indicators
 
         // Get the Colour from Net Profit
         private Color GetColour(double netProfit)
-            => netProfit > 0 ? BearishColour.ToString() : netProfit < 0 ? BearishColour.ToString() : Color.White;
+            => netProfit > 0 ? BullishColour.ToString() : netProfit < 0 ? BearishColour.ToString() : Color.White;
 
         #endregion
 
