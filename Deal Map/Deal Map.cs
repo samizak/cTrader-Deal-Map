@@ -34,8 +34,12 @@ namespace cAlgo.Indicators
         [Parameter(name: "Show Loss Deals?", Group = "Deal Map", DefaultValue = true)]
         public bool ShowLossDeals { get; set; }
 
-        [Parameter(name: "Bearish Colour", Group = "Deal Map", DefaultValue = "Red")]
-        public String BearishColour { get; set; }
+        [Parameter(name: "Bearish", Group = "Colours", DefaultValue = "Red")]
+        public string BearishColour { get; set; }
+
+        [Parameter(name: "Bullish", Group = "Colours", DefaultValue = "Cyan")]
+        public string BullishColour { get; set; }
+
         #endregion Parameters
 
 
@@ -65,7 +69,7 @@ namespace cAlgo.Indicators
 
         // Get the Colour from Net Profit
         private Color GetColour(double netProfit)
-            => netProfit > 0 ? Color.Cyan : netProfit < 0 ? Color.Red : Color.White;
+            => netProfit > 0 ? BearishColour.ToString() : netProfit < 0 ? BearishColour.ToString() : Color.White;
 
         #endregion
 
